@@ -1,64 +1,81 @@
-// Baby Names Data (Top 50 Boy/Girl 2022)
-// Baby Center (babycenter.com)
-// https://www.babycenter.com/baby-names/most-popular/top-baby-names#popularNameList
 
-// Variables for html elements
-let goBtn = document.getElementById("go-btn");
-let menuSelect = document.getElementById("menu-select");
-let container = document.getElementById("container");
-let nameCountSpan = document.getElementById("name-count");
+let cnv = document.getElementById("my-canvas");
+let ctx = cnv.getContext("2d");
+cnv.height = 450;
+cnv.width = window.innerWidth;
+let box = document.getElementById("text-box");
+let count = 100
+box.innerHTML = count;
+let snowFlakes = [];
+for(i = 0; i < 100; i++){
+snowFlakeGen()
+}
+(requestAnimationFrame)(draw);
+function draw(){
+    ctx.clearRect(0, 0, cnv.width, cnv.height);
+     for(i = 0; i < snowFlakes.length; i++){
+        animate(snowFlakes[i]);
+        drawSnow(snowFlakes[i]);
 
-// Initialize Array of Character Objects from json file
-let babyData = [];
-fetch("baby-names-data.json")
-  .then((res) => res.json())
-  .then((data) => (babyData = data));
-
-// Event Listener on Go Button
-goBtn.addEventListener("click", goBtnClicked);
-
-// Process Go Button Click
-function goBtnClicked() {
-  // Get Menu Selection
-  let selection = menuSelect.value;
-
-  // Process Menu Selection
-  if (selection === "display-all") {
-    displayAll();
-  } else if (selection === "gender") {
-    searchGender();
-  } else if (selection === "rank") {
-    searchRank();
-  } else if (selection === "starting-letter") {
-    searchStartingLetter();
-  } else if (selection === "length") {
-    searchLength();
-  }
+        if (snowFlakes[i].y >= 450){
+            snowFlakes[i].y = 10;
+        }
+     }
+    requestAnimationFrame(draw);
 }
 
-// Display All Baby Names
-function displayAll() {
-  console.log("Display All");
-  // Confirm data load
-  console.log(babyData);
+
+function newSnow(initX, initY, initR){
+    return{
+        x: initX,
+        y: initY,
+        r: initR
+        };
+    }
+
+function drawSnow(singleFlake){
+    x = singleFlake.x
+    y = singleFlake.y
+    r = singleFlake.r
+    ctx.fillStyle = "white"
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, 2*Math.PI);
+    ctx.fill();
 }
 
-// Display Names by Gender
-function searchGender() {
-  console.log("Search By Gender");
+function animate(singleFlake){
+    if (singleFlake.r == 2){
+        singleFlake. y += 2.5;
+    }
+    else if(singleFlake.r == 3){
+        singleFlake. y += 2;
+    }
 }
 
-// Display Names within a Range of Ranks
-function searchRank() {
-  console.log("Search By Rank");
+function snowFlakeGen(){
+snowFlakes.push(newSnow(Math.floor(Math.random() * window.innerWidth),
+Math.floor(Math.random() * 450),
+Math.floor((Math.random() * 2) + 2)));
 }
 
-// Display Names with Starting Letter
-function searchStartingLetter() {
-  console.log("Search by Starting Letter");
-}
 
-// Display Names with a Specific Length
-function searchLength() {
-  console.log("Search by Name Length");
+
+document.addEventListener("keydown", keydownHandler)
+
+function keydownHandler(event){
+
+    if (event.keyCode === 38){
+        for(i = 0; i < 10; i++){
+            snowFlakeGen()
+            }
+        box.innerHTML = count += 10;
+    }
+    else if (event.keyCode === 40){
+        for(i = 0; i < 10; i++){
+            snowFlakes.pop();
+            } 
+        if (count > 0){
+            box.innerHTML = count -= 10;
+        }
+    }
 }
