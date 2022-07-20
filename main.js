@@ -24,7 +24,6 @@ function draw(){
     requestAnimationFrame(draw);
 }
 
-
 function newSnow(initX, initY, initR){
     return{
         x: initX,
