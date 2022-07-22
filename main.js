@@ -24,11 +24,13 @@ function draw(){
     requestAnimationFrame(draw);
 }
 
-function newSnow(initX, initY, initR){
+
+function newSnow(initX, initY, initR, initS){
     return{
         x: initX,
         y: initY,
-        r: initR
+        r: initR,
+        s: initS
         };
     }
 
@@ -43,18 +45,14 @@ function drawSnow(singleFlake){
 }
 
 function animate(singleFlake){
-    if (singleFlake.r == 2){
-        singleFlake. y += 2.5;
-    }
-    else if(singleFlake.r == 3){
-        singleFlake. y += 2;
-    }
+    singleFlake.y += singleFlake.s
 }
 
 function snowFlakeGen(){
 snowFlakes.push(newSnow(Math.floor(Math.random() * window.innerWidth),
 Math.floor(Math.random() * 450),
-Math.floor((Math.random() * 2) + 2)));
+Math.floor((Math.random() * 2) + 2),
+Math.floor((Math.random() * 2) + 3)));
 }
 
 
